@@ -24,7 +24,7 @@ public class FornecedorDAO {
         try {
             conn = ConnectionFactory.getConnection();
 
-            String sql = "INSERT INTO CLIENTE "
+            String sql = "INSERT INTO FORNECEDOR "
                     + "(NOME "
                     + ", SOBRENOME "
                     + ", CPF "
