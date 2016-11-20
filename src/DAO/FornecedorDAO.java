@@ -8,10 +8,7 @@ package DAO;
 import com.mysql.jdbc.Connection;
 import factory.ConnectionFactory;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import model.Cliente;
 
 /**
@@ -73,80 +70,5 @@ public class FornecedorDAO {
             }
 
         }
-    }
-    public List<Cliente> consultarTodosFornecedoresDAO() throws Exception {
-
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        Connection conn = null;
-
-        List<Cliente> listaSaida = new ArrayList<>();
-
-        Cliente cliente = null;
-        try {
-            conn = ConnectionFactory.getConnection();
-
-            String sql = "select cod_cliente, nome, sobrenome, cpf, endereco, cidade, estado, flg_Ativo from cliente;";
-
-            pstmt = conn.prepareStatement(sql);
-
-            rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-
-                // para cada linha retornada cria uma nova instancia de cliente  
-                cliente = new Cliente();
-
-                cliente.setCodCliente(rs.getInt("cod_cliente"));
-                cliente.setNome(rs.getString("nome"));
-                cliente.setSobrenome(rs.getString("sobrenome"));
-                cliente.setCpf(rs.getString("cpf"));
-                cliente.setCidade(rs.getString("cidade"));
-                cliente.setEstado(rs.getString("estado"));
-                cliente.setFlgAtivo(rs.getBoolean("flg_Ativo"));
-                // adiciona o cliente recem preenchido na lista 
-                listaSaida.add(cliente);
-
-                // limpa a referencia ao cliente 
-                cliente = null;
-
-            }
-
-            // fecha a conexão 
-            conn.close();
-
-        } catch (SQLException sqlEx) {
-
-            throw new Exception("Erro da camada DAO, problemas com sql " + sqlEx.getMessage());
-
-        } catch (Exception ex) {
-            throw new Exception("Erro da camada DAO: " + ex.getMessage());
-
-        } finally {
-
-            if (rs != null) {
-                try {
-
-                    rs.close();
-
-                } catch (SQLException sqlEx) {
-
-                    throw new Exception("Erro da cama DAO, problemas ao fechar a conexão com SQL: " + sqlEx.getMessage());
-
-                }
-
-            }
-            if (pstmt != null) {
-                try {
-
-                    pstmt.close();
-                } catch (SQLException sqlEx) {
-
-                    throw new Exception("Erro da camada DAO, problema ao fechar a conexão SQL" + sqlEx.getMessage());
-                }
-
-            }
-        }
-        return listaSaida;
     }
 }
