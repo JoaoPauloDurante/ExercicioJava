@@ -5,7 +5,10 @@
  */
 package Controller;
 
+import DAO.ClienteDAO;
 import DAO.FornecedorDAO;
+import java.util.List;
+import model.Cliente;
 import model.Fornecedor;
 
 /**
@@ -22,4 +25,12 @@ public class FornecedorController {
     dao.cadastrarFornecedorDAO(fornecedor);
     
   }
+    
+    public List<Fornecedor> consultarTodosFornecedorController() throws Exception
+    {
+     FornecedorDAO dao = new FornecedorDAO();
+     
+     return dao.consultarTodosFornecedoresDAO();
+    
+    }
 }
