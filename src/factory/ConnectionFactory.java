@@ -37,7 +37,7 @@ public class ConnectionFactory {
    String driverName = "com.mysql.jdbc.Driver";
    String url = "jdbc:mysql://localhost:3306/EXEC_PC_II";
    String username = "root";
-   String password = "1234";
+   String password = "";
  
  
  
