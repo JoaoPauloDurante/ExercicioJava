@@ -8,8 +8,12 @@ package DAO;
 import com.mysql.jdbc.Connection;
 import factory.ConnectionFactory;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import model.Cliente;
+import model.Fornecedor;
 
 /**
  *
@@ -25,24 +29,21 @@ public class FornecedorDAO {
             conn = ConnectionFactory.getConnection();
 
             String sql = "INSERT INTO FORNECEDOR "
-                    + "(NOME "
-                    + ", SOBRENOME "
-                    + ", CPF "
-                    + ", ENDERECO"
-                    + ", CIDADE"
-                    + ", ESTADO"
+                    + "(NOME_FORNECEDOR "
+                    + ", CIDADE "
+                    + ", ESTADO "
                     + ", FLG_ATIVO)"
-                    + " VALUES(?, ?, ? , ?, ?, ?, ?)";
+                    + " VALUES(?, ?, ? , ?)";
+                 
 
             pstmt = conn.prepareStatement(sql);
 
-            pstmt.setString(1, cliente.getNome());
-            pstmt.setString(2, cliente.getSobrenome());
-            pstmt.setString(3, cliente.getCpf());
-            pstmt.setString(4, cliente.getEndereco());
-            pstmt.setString(5, cliente.getCidade());
-            pstmt.setString(6, cliente.getEstado());
-            pstmt.setBoolean(7, cliente.getFlgAtivo());
+            pstmt.setString(1, fornecedor.getNomeFornecedor());
+            pstmt.setString(2, fornecedor.getCidade());
+            pstmt.setString(3, fornecedor.getEstado());
+            pstmt.setBoolean(4, fornecedor.getFlgAtivo());
+            
+           
 
             //executa o sql
             pstmt.execute();
@@ -70,5 +71,80 @@ public class FornecedorDAO {
             }
 
         }
+    }
+    
+    public List<Fornecedor> consultarTodosFornecedoresDAO() throws Exception {
+
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Connection conn = null;
+
+        List<Fornecedor> listaSaida = new ArrayList<>();
+
+        Fornecedor fornecedor = null;
+        try {
+            conn = ConnectionFactory.getConnection();
+
+            String sql = "select cod_fornecedor,nome_fornecedor, cidade, estado, flg_ativo from fornecedor";
+
+            pstmt = conn.prepareStatement(sql);
+
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+
+                // para cada linha retornada cria uma nova instancia de fornecedor  
+                fornecedor = new Fornecedor();
+
+                fornecedor.setCodFornecedor(rs.getInt("cod_fornecedor"));
+                fornecedor.setNomeFornecedor(rs.getString("nome_fornecedor"));
+                fornecedor.setCidade(rs.getString("cidade"));
+                fornecedor.setEstado(rs.getString("estado"));
+                fornecedor.setFlgAtivo(rs.getBoolean("flg_Ativo"));
+                // adiciona o cliente recem preenchido na lista 
+                listaSaida.add(fornecedor);
+
+                // limpa a referencia ao cliente 
+                fornecedor = null;
+
+            }
+              
+
+            // fecha a conexão 
+            conn.close();
+
+        } catch (SQLException sqlEx) {
+
+            throw new Exception("Erro da camada DAO, problemas com sql " + sqlEx.getMessage());
+
+        } catch (Exception ex) {
+            throw new Exception("Erro da camada DAO: " + ex.getMessage());
+
+        } finally {
+
+            if (rs != null) {
+                try {
+
+                    rs.close();
+
+                } catch (SQLException sqlEx) {
+
+                    throw new Exception("Erro da cama DAO, problemas ao fechar a conexão com SQL: " + sqlEx.getMessage());
+
+                }
+
+            }
+            if (pstmt != null) {
+                try {
+
+                    pstmt.close();
+                } catch (SQLException sqlEx) {
+
+                    throw new Exception("Erro da camada DAO, problema ao fechar a conexão SQL" + sqlEx.getMessage());
+                }
+
+            }
+        }
+        return listaSaida;
     }
 }
