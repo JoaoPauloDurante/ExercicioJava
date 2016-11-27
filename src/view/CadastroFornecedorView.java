@@ -5,6 +5,10 @@
  */
 package view;
 
+import Exceptions.ValidacaoException;
+import javax.swing.JOptionPane;
+import service.FornecedorService;
+
 /**
  *
  * @author João Paulo
@@ -44,6 +48,11 @@ public class CadastroFornecedorView extends javax.swing.JFrame {
         jLabel3.setText("Estado");
 
         jButtonCadastrarFornecedor.setText("CADASTRAR");
+        jButtonCadastrarFornecedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCadastrarFornecedorActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -90,6 +99,32 @@ public class CadastroFornecedorView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButtonCadastrarFornecedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadastrarFornecedorActionPerformed
+        // TODO add your handling code here:
+        try{
+            FornecedorService.cadastrarFornecedorService(0,jTextFieldNomeFornecedor.getText(),
+                    jTextFieldCidade.getText(),
+                    jTextFieldEstado.getText(),
+                    Boolean.TRUE);
+        
+            JOptionPane.showMessageDialog(this, "Cliente cadastrado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        limparCampos();
+        
+        }
+        catch (ValidacaoException vex) {
+            JOptionPane.showMessageDialog(this, vex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonCadastrarFornecedorActionPerformed
+
+    public void limparCampos(){
+    
+    jTextFieldNomeFornecedor.setText("");
+    jTextFieldCidade.setText("");
+    jTextFieldEstado.setText("");
+            
+    }
     /**
      * @param args the command line arguments
      */
