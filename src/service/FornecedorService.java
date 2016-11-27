@@ -16,7 +16,7 @@ import model.Fornecedor;
  */
 public class FornecedorService {
     
-    public static void cadastrarFornecedorService(Integer codCliente,
+    public static void cadastrarFornecedorService(Integer codFornecedor,
             String nomeFornecedor,
             String cidade,
             String estado,
@@ -48,11 +48,11 @@ public class FornecedorService {
         //instancia controller
         FornecedorController controller = new FornecedorController();
         
-        //cria um objeto cliente passando os valores ja validados
+        //cria um objeto fornecedor passando os valores ja validados
         Fornecedor fornecedor = new Fornecedor();
         
         fornecedor.setCidade(cidade);
-        fornecedor.setCodFornecedor(codCliente);
+        fornecedor.setCodFornecedor(codFornecedor);
         
         fornecedor.setFlgAtivo(flgAtivo);
         fornecedor.setNomeFornecedor(nomeFornecedor);
