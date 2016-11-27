@@ -8,6 +8,8 @@ package service;
 import Controller.ClienteController;
 import Controller.FornecedorController;
 import Exceptions.ValidacaoException;
+import java.util.List;
+import model.Cliente;
 import model.Fornecedor;
 
 /**
@@ -52,6 +54,7 @@ public class FornecedorService {
         Fornecedor fornecedor = new Fornecedor();
         
         fornecedor.setCidade(cidade);
+        fornecedor.setEstado(estado);
         fornecedor.setCodFornecedor(codFornecedor);
         
         fornecedor.setFlgAtivo(flgAtivo);
@@ -61,5 +64,14 @@ public class FornecedorService {
         //passa o cliente já preenchido para o controller
         
         controller.cadastrarFornecedorController(fornecedor);
+    }
+    
+    public static List<Fornecedor> consultarTodosFornecedoresService() throws Exception{
+        
+        
+    FornecedorController controller = new FornecedorController();
+    
+    return controller.consultarTodosFornecedorController();
+    
     }
 }
